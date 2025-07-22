@@ -204,7 +204,8 @@ const tarotImageMap: Record<string, string> = {
 const DrawCards = () => {
   const [question, setQuestion] = useState("");
   const [selectedSpread, setSelectedSpread] = useState("past-present-future");
-  const [drawnCards, setDrawnCards] = useState<string[]>([]);
+  // Thay đổi drawnCards thành mảng object { name, reversed }
+  const [drawnCards, setDrawnCards] = useState<{ name: string; reversed: boolean }[]>([]);
   const [isDrawing, setIsDrawing] = useState(false);
   const [interpretation, setInterpretation] = useState("");
   const [isInterpreting, setIsInterpreting] = useState(false);
@@ -226,7 +227,10 @@ const DrawCards = () => {
     
     setTimeout(() => {
       const shuffled = [...completeTarotDeck].sort(() => Math.random() - 0.5);
-      const drawn = shuffled.slice(0, selectedSpreadData?.cardCount || 3);
+      const drawn = shuffled.slice(0, selectedSpreadData?.cardCount || 3).map(name => ({
+        name,
+        reversed: Math.random() < 0.5 // 50% ngược
+      }));
       setDrawnCards(drawn);
       setIsDrawing(false);
       setAutoInterpret(true); // Trigger auto AI
@@ -257,7 +261,7 @@ const DrawCards = () => {
       const request: TarotInterpretationRequest = {
         question: question,
         spreadName: selectedSpreadData?.name || "Trải bài",
-        cards: drawnCards,
+        cards: drawnCards.map(card => `${card.name} ${card.reversed ? '(Ngược)' : '(Xuôi)'}`),
         spreadPositions: selectedSpreadData?.positions || []
       };
 
@@ -271,7 +275,7 @@ const DrawCards = () => {
       const request: TarotInterpretationRequest = {
         question: question,
         spreadName: selectedSpreadData?.name || "Trải bài",
-        cards: drawnCards,
+        cards: drawnCards.map(card => `${card.name} ${card.reversed ? '(Ngược)' : '(Xuôi)'}`),
         spreadPositions: selectedSpreadData?.positions || []
       };
       
@@ -294,7 +298,7 @@ const DrawCards = () => {
       <TarotModal
         open={showModal}
         loading={isDrawing || isInterpreting}
-        cards={drawnCards.map(name => ({ name, image: tarotImageMap[name] }))}
+        cards={drawnCards.map(card => ({ name: card.name, image: tarotImageMap[card.name], reversed: card.reversed }))}
         aiResult={interpretation}
         onClose={() => setShowModal(false)}
       />
@@ -396,21 +400,23 @@ const DrawCards = () => {
                     drawnCards.length === 2 ? 'grid-cols-1 md:grid-cols-2' :
                     'grid-cols-1 md:grid-cols-3 lg:grid-cols-5'
                   }`}>
-                    {drawnCards.map((card, index) => (
+                    {drawnCards.map((cardObj, index) => (
                       <Card key={index} className="p-6 text-center bg-gradient-mystical animate-float shadow-mystical">
                         <div className="mb-3">
                           <div className="w-16 h-24 bg-primary/20 rounded-lg mx-auto mb-3 flex items-center justify-center overflow-hidden">
-                            {tarotImageMap[card] ? (
+                            {tarotImageMap[cardObj.name] ? (
                               <img
-                                src={tarotImageMap[card]}
-                                alt={card}
-                                className="object-cover w-full h-full"
+                                src={tarotImageMap[cardObj.name]}
+                                alt={cardObj.name}
+                                className={`object-cover w-full h-full ${cardObj.reversed ? 'rotate-180' : ''}`}
                               />
                             ) : (
                               <Sparkles className="h-8 w-8 text-primary" />
                             )}
                           </div>
-                          <h3 className="font-semibold text-primary-foreground text-sm">{card}</h3>
+                          <h3 className="font-semibold text-primary-foreground text-sm">
+                            {cardObj.name} {cardObj.reversed ? '(Ngược)' : '(Xuôi)'}
+                          </h3>
                         </div>
                         <p className="text-xs text-primary-foreground/80">
                           {selectedSpreadData?.positions[index] || `Vị trí ${index + 1}`}

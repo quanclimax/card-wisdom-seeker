@@ -4,7 +4,7 @@ import ReactMarkdown from "react-markdown";
 interface TarotModalProps {
   open: boolean;
   loading: boolean;
-  cards: { name: string; image?: string }[];
+  cards: { name: string; image?: string; reversed?: boolean }[];
   aiResult?: string;
   onClose: () => void;
 }
@@ -54,12 +54,12 @@ const TarotModal: React.FC<TarotModalProps> = ({ open, loading, cards, aiResult,
                     className="flex flex-col items-center gap-3 animate-float"
                     style={{ animationDelay: `${idx * 0.2}s` }}
                   >
-                    <div className="w-32 h-48 rounded-xl bg-background/80 shadow-xl border-2 border-primary/40 overflow-hidden">
+                    <div className="w-32 h-48 rounded-xl bg-background/80 shadow-xl border-2 border-primary/40 overflow-hidden flex items-center justify-center">
                       {card.image ? (
-                        <img 
-                          src={card.image} 
-                          alt={card.name} 
-                          className="object-cover w-full h-full hover:scale-105 transition-transform duration-300" 
+                        <img
+                          src={card.image}
+                          alt={card.name}
+                          className={`object-cover w-full h-full hover:scale-105 transition-transform duration-300 ${card.reversed ? 'rotate-180' : ''}`}
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">
@@ -68,7 +68,7 @@ const TarotModal: React.FC<TarotModalProps> = ({ open, loading, cards, aiResult,
                       )}
                     </div>
                     <div className="text-center">
-                      <h4 className="font-semibold text-primary-foreground text-sm mb-1">{card.name}</h4>
+                      <h4 className="font-semibold text-primary-foreground text-sm mb-1">{card.name} {card.reversed ? '(Ngược)' : '(Xuôi)'}</h4>
                       <p className="text-xs text-primary-foreground/70">Lá bài {idx + 1}</p>
                     </div>
                   </div>
