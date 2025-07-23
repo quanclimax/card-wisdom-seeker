@@ -39,6 +39,7 @@ Yêu cầu phân tích:
 2. **Phân tích Chi tiết:**
    - Đi sâu vào phân tích ý nghĩa của từng lá bài trong bối cảnh vị trí cụ thể của nó. Ví dụ, lá The Sun ở vị trí "Thách thức" sẽ có ý nghĩa khác với khi nó ở vị trí "Kết quả".
    - Đừng chỉ nêu ý nghĩa cơ bản, hãy liên hệ trực tiếp đến câu hỏi của người hỏi.
+   - Luôn nhìn theo hướng tích cực và mang tính xây dựng.
 3. **Tổng hợp & Kể chuyện:**
    - Kết nối tất cả các lá bài lại với nhau để tạo thành một câu chuyện hoặc một bức tranh toàn cảnh có ý nghĩa. Cho thấy dòng chảy năng lượng và sự liên kết giữa các vị trí.
    - Chỉ ra bài học cốt lõi hoặc thông điệp chính mà toàn bộ trải bài đang muốn truyền tải.
